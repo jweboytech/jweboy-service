@@ -10,21 +10,23 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { MetadataService } from './metadata.service';
 import { Metadata } from './entity/metadata.entity';
-import { PhotoService } from '../photo/photo.service';
 import { UpdateMetadata } from './entity/update-metadata';
 
 @Controller('metadata')
 export class MetadataController {
-  constructor(
-    private readonly metadataService: MetadataService,
-    private readonly photoService: PhotoService,
-  ) {}
+  constructor(private readonly metadataService: MetadataService) {}
+
+  @ApiTags('metadata')
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findAll() {
+    return this.metadataService.findAll();
+  }
 
   @ApiTags('metadata')
   @Post()
   @HttpCode(HttpStatus.OK)
   async save(@Body() dto: Metadata) {
-    dto.photo = await this.photoService.findOneBy({ id: 4 });
     return this.metadataService.save(dto);
   }
 
@@ -32,6 +34,6 @@ export class MetadataController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOneById(@Param() { id }: UpdateMetadata) {
-    return this.metadataService.findOneBy({ id });
+    return this.metadataService.findOne({ id });
   }
 }

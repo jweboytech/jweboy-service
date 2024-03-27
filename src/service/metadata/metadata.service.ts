@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Metadata } from './entity/metadata.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class MetadataService {
   constructor(
-    @Inject('METADATA_REPOSITORY') private repository: Repository<Metadata>,
+    @InjectRepository(Metadata) private repository: Repository<Metadata>,
   ) {}
 
   findAll(): Promise<Metadata[]> {
@@ -16,7 +17,7 @@ export class MetadataService {
     return this.repository.save(dto);
   }
 
-  findOneBy(dto: Partial<Metadata>): Promise<Metadata> {
+  findOne(dto: Partial<Metadata>): Promise<Metadata> {
     return this.repository.findOneBy(dto);
   }
 }

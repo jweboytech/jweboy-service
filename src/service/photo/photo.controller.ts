@@ -32,7 +32,7 @@ export class PhotoController {
   @ApiTags('photo')
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOneBy(@Param() params: Photo) {
-    return this.photoService.findOneBy(params);
+  findOne(@Param() params: Photo) {
+    return this.photoService.findOne(params);
   }
 }

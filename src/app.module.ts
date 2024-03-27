@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
 import { PhotoModule } from './service/photo/photo.module';
 import { MetadataModule } from './service/metadata/metadata.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -11,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
+      isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -28,7 +28,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
       inject: [ConfigService],
     }),
-    // DatabaseModule,
     PhotoModule,
     MetadataModule,
   ],

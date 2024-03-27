@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { PhotoService } from './photo.service';
-import { DatabaseModule } from '../../database/database.module';
-import { photoProviders } from './photo.provider';
 import { PhotoController } from './photo.controller';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Photo } from './entity/photo.entity';
 
 @Module({
-  imports: [DatabaseModule],
-  providers: [...photoProviders, PhotoService],
+  imports: [TypeOrmModule.forFeature([Photo])],
+  providers: [PhotoService],
   controllers: [PhotoController],
-  exports: [PhotoService],
+  exports: [PhotoModule],
 })
 export class PhotoModule {}

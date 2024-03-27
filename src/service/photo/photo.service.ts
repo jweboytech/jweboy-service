@@ -1,11 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Photo } from './entity/photo.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PhotoService {
   constructor(
-    @Inject('PHOTO_REPOSITORY') private photoRepository: Repository<Photo>,
+    @InjectRepository(Photo) private photoRepository: Repository<Photo>,
   ) {}
 
   findAll(): Promise<Photo[]> {
@@ -20,7 +21,7 @@ export class PhotoService {
     return this.photoRepository.save(dto);
   }
 
-  findOneBy(dto: Partial<Photo>): Promise<Photo> {
+  findOne(dto: Partial<Photo>): Promise<Photo> {
     return this.photoRepository.findOneBy(dto);
   }
 }
