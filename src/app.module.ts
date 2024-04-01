@@ -5,6 +5,7 @@ import { PhotoModule } from './service/photo/photo.module';
 import { MetadataModule } from './service/metadata/metadata.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PlatformModule } from './service/platform/platform.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     PhotoModule,
     MetadataModule,
+    PlatformModule,
   ],
   controllers: [AppController],
   providers: [AppService],
