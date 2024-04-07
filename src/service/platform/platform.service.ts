@@ -14,6 +14,7 @@ export class PlatformService {
     return this.platformRepository
       .createQueryBuilder()
       .orderBy('update_at', 'DESC')
+      .where('is_deleted = :is_deleted', { is_deleted: false })
       .getMany();
   }
 
@@ -21,6 +22,7 @@ export class PlatformService {
     return this.platformRepository
       .createQueryBuilder()
       .where('type = :type', { type })
+      .andWhere('is_deleted = :is_deleted', { is_deleted: false })
       .getMany();
   }
 
@@ -52,6 +54,15 @@ export class PlatformService {
   findOne(id: number) {
     return this.platformRepository
       .createQueryBuilder()
+      .where('id = :id', { id })
+      .getOne();
+  }
+
+  removeOne(id: number) {
+    return this.platformRepository
+      .createQueryBuilder()
+      .update(Platform)
+      .set({ is_deleted: true })
       .where('id = :id', { id })
       .execute();
   }

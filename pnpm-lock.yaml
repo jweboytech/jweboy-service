@@ -35,6 +35,9 @@ dependencies:
   typeorm:
     specifier: ^0.3.20
     version: 0.3.20(pg@8.11.3)(ts-node@10.9.2)
+  undici:
+    specifier: ^6.11.1
+    version: 6.11.1
 
 devDependencies:
   '@nestjs/cli':
@@ -5291,6 +5294,11 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
+  /undici@6.11.1:
+    resolution: {integrity: sha512-KyhzaLJnV1qa3BSHdj4AZ2ndqI0QWPxYzaIOio0WzcEJB9gvuysprJSLtpvc2D9mhR9jPDUk7xlJlZbH2KR5iw==}
+    engines: {node: '>=18.0'}
+    dev: false
 
   /universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}

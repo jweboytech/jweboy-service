@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -22,6 +23,7 @@ export class PlatformController {
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll(@Query() { type, keyword }: PlatformQuery) {
+    console.log(type, keyword);
     if (keyword != null) {
       return this.platformService.findSomeByKeywords(keyword);
     }
@@ -51,7 +53,14 @@ export class PlatformController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(@Param() { id }: UpdatePlatform) {
-    await this.platformService.findOne(id);
+    return await this.platformService.findOne(id);
+  }
+
+  @ApiTags('platform')
+  @Delete(':id')
+  @HttpCode(HttpStatus.OK)
+  async removeOne(@Param() { id }: UpdatePlatform) {
+    await this.platformService.removeOne(id);
     return true;
   }
 }

@@ -40,14 +40,13 @@ export class Platform {
   description: string;
 
   @ApiProperty()
-  @Column({ length: 20 })
-  category: string;
-
-  @ApiProperty()
   @Column({ enum: PlatformType })
   type: PlatformType;
 
   @ApiProperty()
   @Column({ enum: PlatformTagType })
   tag: PlatformTagType;
+
+  @Column({ default: false })
+  is_deleted: boolean;
 }
