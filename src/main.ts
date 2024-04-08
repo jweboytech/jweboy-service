@@ -5,7 +5,6 @@ import { TransformInterceptor } from './interceptor/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
   const config = new DocumentBuilder()
     .setTitle('Jweboy Backend')
     .setVersion('1.0')
@@ -24,9 +23,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  app.enableCors();
   SwaggerModule.setup('api', app, document);
 
+  app.enableCors({ origin: '*' });
   app.useGlobalInterceptors(new TransformInterceptor());
 
   await app.listen(4000);
