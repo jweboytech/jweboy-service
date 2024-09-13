@@ -42,8 +42,8 @@ jobs:
 
       # 镜像打标
       - name: Tag the Docker image
-        run: docker tag ${{ env.PROJECT_NAME }}:${{ env.VERSION }} ${{ env.PROJECT_NAME }}:${{ env.VERSION }}
+        run: docker tag ${{ env.PROJECT_NAME }}:${{ env.VERSION }} ${{env.HOST}}/${{ env.PROJECT_NAME }}:${{ env.VERSION }}
 
       # 推送镜像
       - name: Push the Docker image
-        run: docker push ${{ env.PROJECT_NAME }}:${{ env.VERSION }}
+        run: docker push ${{env.HOST}}/${{ env.PROJECT_NAME }}:${{ env.VERSION }}
