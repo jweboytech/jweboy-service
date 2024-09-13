@@ -7,8 +7,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
 } from '@nestjs/common';
-import { ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { Project } from './entity/project.entity';
 
@@ -44,6 +45,19 @@ export class ProjectController {
     const { id, ...restDto } = dto;
     await this.projectService.updateOne(id, restDto);
     return true;
+  }
+
+  @ApiTags('project')
+  @Get('detail')
+  @HttpCode(HttpStatus.OK)
+  @ApiQuery({
+    name: 'id',
+    required: true,
+    description: '项目ID',
+    schema: { type: 'number' },
+  })
+  async findOneByPrimaryKey(@Query('id') id: number) {
+    return this.projectService.findOneByPrimaryKey(id);
   }
 
   @ApiTags('project')

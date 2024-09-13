@@ -50,4 +50,11 @@ export class ProjectService {
       .where('id = :id', { id })
       .execute();
   }
+
+  findOneByPrimaryKey(id: number) {
+    return this.projectRepository
+      .createQueryBuilder()
+      .where('id = :id', { id })
+      .getOne();
+  }
 }
