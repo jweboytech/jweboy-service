@@ -11,7 +11,11 @@ export class ProjectService {
   ) {}
 
   findAll() {
-    return this.projectRepository.findAndCount();
+    return this.projectRepository
+      .createQueryBuilder('project')
+      .select()
+      .orderBy('project.create_at', 'DESC')
+      .getManyAndCount();
   }
 
   insertOne(dto: Project) {
@@ -28,5 +32,22 @@ export class ProjectService {
       .createQueryBuilder()
       .where('name = :name', { name })
       .getOne();
+  }
+
+  updateOne(id: number, dto: Omit<Project, 'id'>) {
+    return this.projectRepository
+      .createQueryBuilder()
+      .update()
+      .where('id = :id', { id })
+      .set(dto)
+      .execute();
+  }
+
+  deleteOne(id: number) {
+    return this.projectRepository
+      .createQueryBuilder()
+      .delete()
+      .where('id = :id', { id })
+      .execute();
   }
 }

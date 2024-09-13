@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { Project } from './entity/project.entity';
 
@@ -35,10 +37,26 @@ export class ProjectController {
     }
   }
 
-  // @ApiTags('project')
-  // @Post('create')
-  // @HttpCode(HttpStatus.OK)
-  // async findOne(@Body() dto: Project) {
-  //   return this.projectService.findOne(dto);
-  // }
+  @ApiTags('project')
+  @Post('update')
+  @HttpCode(HttpStatus.OK)
+  async findOne(@Body() dto: Project) {
+    const { id, ...restDto } = dto;
+    await this.projectService.updateOne(id, restDto);
+    return true;
+  }
+
+  @ApiTags('project')
+  @Delete('delete/:id')
+  @HttpCode(HttpStatus.OK)
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: '项目ID',
+    schema: { type: 'number' },
+  })
+  async deleteOne(@Param('id') id: number) {
+    await this.projectService.deleteOne(id);
+    return true;
+  }
 }

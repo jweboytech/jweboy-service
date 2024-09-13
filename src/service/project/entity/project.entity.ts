@@ -39,7 +39,7 @@ export class Project {
   screenshots: string[];
 
   @ApiProperty({ description: '视频' })
-  @Column()
+  @Column({ nullable: true })
   video: string;
 
   @Column({ default: false, select: false })
