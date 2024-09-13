@@ -42,6 +42,9 @@ export class Project {
   @Column({ nullable: true })
   video: string;
 
+  @Column({ default: false, name: 'is_public' })
+  isPublic: boolean;
+
   @Column({ default: false, select: false })
   is_deleted: boolean;
 
