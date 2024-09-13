@@ -3,9 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProjectService } from './service/project/project.service';
-import { ProjectController } from './service/project/project.controller';
 import { ProjectModule } from './service/project/project.module';
+import { CategorytModule } from './service/category/category.module';
 
 @Module({
   imports: [
@@ -17,13 +16,6 @@ import { ProjectModule } from './service/project/project.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        console.log({
-          host: configService.get<string>('DATABASE_HOST'),
-          port: parseInt(configService.get<string>('DATABASE_PORT')),
-          username: configService.get<string>('DATABASE_USER'),
-          password: configService.get<string>('DATABASE_PASSWORD'),
-          database: configService.get<string>('DATABASE_NAME'),
-        });
         return {
           type: 'mariadb',
           host: configService.get<string>('DATABASE_HOST'),
@@ -44,6 +36,7 @@ import { ProjectModule } from './service/project/project.module';
       inject: [ConfigService],
     }),
     ProjectModule,
+    CategorytModule,
     // PhotoModule,
     // MetadataModule,
     // PlatformModule,

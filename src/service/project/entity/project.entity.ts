@@ -1,8 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Category } from '../../../service/category/entity/category.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -16,7 +18,7 @@ export enum ProjectType {
 @Entity()
 export class Project {
   @PrimaryGeneratedColumn()
-  id;
+  id: number;
 
   @ApiProperty({ description: '项目名称' })
   @Column({ length: 20 })
@@ -53,4 +55,9 @@ export class Project {
 
   @UpdateDateColumn({ name: 'update_at' })
   updateAt: Date;
+
+  @ManyToOne(() => Category, (category) => category.projects, {
+    nullable: true,
+  })
+  category: Category;
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from './entity/project.entity';
 import { Repository } from 'typeorm';
+import { QueryProjectDto } from './dto/project.dto';
 
 @Injectable()
 export class ProjectService {
@@ -10,12 +11,17 @@ export class ProjectService {
     private projectRepository: Repository<Project>,
   ) {}
 
-  findAll() {
-    return this.projectRepository
+  findAll(dto: QueryProjectDto) {
+    const query = this.projectRepository
       .createQueryBuilder('project')
       .select()
-      .orderBy('project.create_at', 'DESC')
-      .getManyAndCount();
+      .orderBy('project.create_at', 'DESC');
+
+    if (dto.category) {
+      query.where('categoryId = :categoryId', { categoryId: dto.category });
+    }
+
+    return query.getManyAndCount();
   }
 
   insertOne(dto: Project) {
@@ -53,8 +59,10 @@ export class ProjectService {
 
   findOneByPrimaryKey(id: number) {
     return this.projectRepository
-      .createQueryBuilder()
-      .where('id = :id', { id })
+      .createQueryBuilder('project')
+      .where('project.id = :id', { id })
+      .leftJoinAndSelect('project.category', 'category')
+      .groupBy('project.id, category.id')
       .getOne();
   }
 }

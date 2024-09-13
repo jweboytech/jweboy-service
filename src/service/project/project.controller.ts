@@ -7,21 +7,23 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { Project } from './entity/project.entity';
+import { DeleteProjectDto, QueryProjectDto } from './dto/project.dto';
 
 @Controller('project')
 export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
   @ApiTags('project')
-  @Get('list')
+  @Post('list')
   @HttpCode(HttpStatus.OK)
-  async findAll() {
-    const [items, total] = await this.projectService.findAll();
+  async findAll(@Body() dto: QueryProjectDto) {
+    const [items, total] = await this.projectService.findAll(dto);
     return { items, total };
   }
 
@@ -39,7 +41,7 @@ export class ProjectController {
   }
 
   @ApiTags('project')
-  @Post('update')
+  @Put('update')
   @HttpCode(HttpStatus.OK)
   async findOne(@Body() dto: Project) {
     const { id, ...restDto } = dto;
@@ -61,7 +63,7 @@ export class ProjectController {
   }
 
   @ApiTags('project')
-  @Delete('delete/:id')
+  @Delete('delete')
   @HttpCode(HttpStatus.OK)
   @ApiParam({
     name: 'id',
@@ -69,8 +71,8 @@ export class ProjectController {
     description: '项目ID',
     schema: { type: 'number' },
   })
-  async deleteOne(@Param('id') id: number) {
-    await this.projectService.deleteOne(id);
+  async deleteOne(@Body() dto: DeleteProjectDto) {
+    await this.projectService.deleteOne(dto.id);
     return true;
   }
 }
