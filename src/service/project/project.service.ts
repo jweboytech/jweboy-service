@@ -21,6 +21,14 @@ export class ProjectService {
       query.where('categoryId = :categoryId', { categoryId: dto.category });
     }
 
+    if (dto.isPublic) {
+      query.where('is_public = :isPublic', { isPublic: dto.isPublic });
+    }
+
+    if (dto.type) {
+      query.where('type = :type', { type: dto.type });
+    }
+
     return query.getManyAndCount();
   }
 
