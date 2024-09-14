@@ -22,11 +22,11 @@ export class ProjectService {
     }
 
     if (dto.isPublic) {
-      query.where('is_public = :isPublic', { isPublic: dto.isPublic });
+      query.andWhere('is_public = :isPublic', { isPublic: dto.isPublic });
     }
 
     if (dto.type) {
-      query.where('type = :type', { type: dto.type });
+      query.andWhere('type = :type', { type: dto.type });
     }
 
     return query.getManyAndCount();
