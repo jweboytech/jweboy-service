@@ -12,7 +12,6 @@ import { CategorytModule } from './service/category/category.module';
       envFilePath: ['.env.development.local'],
       isGlobal: true,
     }),
-
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {

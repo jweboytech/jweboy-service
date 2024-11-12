@@ -23,11 +23,11 @@ jobs:
 
       - name: Set the project name
         id: project-name
-        run: echo "PROJECT_NAME=jweboy_server" >> $GITHUB_ENV
+        run: echo "PROJECT_NAME=jweboy/project_server" >> $GITHUB_ENV
 
       - name: Set the host
         id: host
-        run: echo "HOST=docker.io/jweboy" >> $GITHUB_ENV
+        run: echo "HOST=registry.cn-hangzhou.aliyuncs.com" >> $GITHUB_ENV
 
       # Docker 登录
       - name: Log in to Docker Hub
