@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from './service/project/project.module';
 import { CategorytModule } from './service/category/category.module';
+import { CertificateModule } from './service/certificate/certificate.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CategorytModule } from './service/category/category.module';
     }),
     ProjectModule,
     CategorytModule,
+    CertificateModule,
     // PhotoModule,
     // MetadataModule,
     // PlatformModule,
