@@ -16,6 +16,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+         - name: Set the project name
+        id: project-name
+        run: echo "PROJECT_NAME=jweboy_management" >> $GITHUB_ENV
+
+      - name: Set the host
+        id: host
+        run: echo "HOST=docker.io/jweboy" >> $GITHUB_ENV
+
+      # Docker 登录
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       # 自动获取当前日期并作为环境变量
       - name: Set the latest version
         id: get-version
@@ -27,7 +42,7 @@ jobs:
 
       - name: Set the host
         id: host
-        run: echo "HOST=registry.cn-hangzhou.aliyuncs.com" >> $GITHUB_ENV
+        run: echo "HOST=docker.io/jweboy" >> $GITHUB_ENV
 
       # Docker 登录
       - name: Log in to Docker Hub
