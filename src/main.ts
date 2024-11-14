@@ -30,8 +30,8 @@ async function bootstrap() {
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new ExceptionsFilter());
 
-  await app.listen(3300, () => {
-    console.log('Server is running at http://localhost:3300/api');
+  await app.listen(4000, () => {
+    console.log('Server is running at http://localhost:4000/api');
   });
 }
 bootstrap();
