@@ -8,5 +8,6 @@ import { Certificate } from './entity/certificate.entity';
   imports: [TypeOrmModule.forFeature([Certificate])],
   controllers: [CertificateController],
   providers: [CertificateService],
+  exports: [CertificateService],
 })
 export class CertificateModule {}

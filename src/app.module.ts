@@ -6,9 +6,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from './service/project/project.module';
 import { CategorytModule } from './service/category/category.module';
 import { CertificateModule } from './service/certificate/certificate.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskService } from './service/task/task.service';
+import { TaskModule } from './service/task/task.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
       isGlobal: true,
@@ -38,6 +42,7 @@ import { CertificateModule } from './service/certificate/certificate.module';
     ProjectModule,
     CategorytModule,
     CertificateModule,
+    TaskModule,
     // PhotoModule,
     // MetadataModule,
     // PlatformModule,
