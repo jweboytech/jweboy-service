@@ -1,20 +1,26 @@
-FROM node:18-slim
-
-# 安装构建工具
-# RUN apk add --no-cache python3 make g++
+# 构建阶段
+FROM node:18-slim AS builder
 
 WORKDIR /app
 
-COPY package.json ./
-COPY pnpm-lock.yaml ./
+COPY . .
 
-RUN npm i -g pnpm --registry=https://registry.npmmirror.com
+RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
+    pnpm install
 
-RUN pnpm install
+RUN pnpm build 
 
-COPY . ./
 
-RUN pnpm build
+# 运行阶段
+FROM node:18-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/dist ./dist
+COPY package.json pnpm-lock.yaml ./
+
+RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
+    pnpm install --prod --frozen-lockfile
 
 # docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres 通过命令查询容器内的 IP 地址
 ENV DATABASE_HOST=172.17.0.9
@@ -26,3 +32,8 @@ ENV DATABASE_NAME=jweboy
 EXPOSE 4000
 
 CMD [ "npm", "run", "start:prod" ]
+
+
+
+
+

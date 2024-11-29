@@ -16,4 +16,4 @@ fi
 docker run --name $PROJECT_NAME -itd --restart=always -p $PORT:$PORT $IMAGE_NAME:$VERSION
 
 
-docker push $IMAGE_NAME
+# docker push $IMAGE_NAME
