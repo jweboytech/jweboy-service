@@ -27,12 +27,14 @@ jobs:
 
       - name: Set the host
         id: host
-        run: echo "HOST=registry.cn-hangzhou.aliyuncs.com" >> $GITHUB_ENV
+        run: echo "HOST=docker.io/jweboy" >> $GITHUB_ENV
 
-        # Docker 登录
-      - name: Log in to Alibaba Cloud Docker Registry
-        run: |
-          echo "${{ secrets.ALIYUN_PASSWORD }}" | docker login --username=1259524459@qq.com ${{env.HOST}} --password-stdin
+      # Docker 登录
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       # 构建镜像
       - name: Build the Docker image
