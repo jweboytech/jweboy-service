@@ -9,6 +9,8 @@ import { CertificateModule } from './service/certificate/certificate.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './service/task/task.service';
 import { TaskModule } from './service/task/task.module';
+import { FileService } from './service/file/file.service';
+import { FileModule } from './service/file/file.module';
 
 @Module({
   imports: [
@@ -43,11 +45,12 @@ import { TaskModule } from './service/task/task.module';
     CategorytModule,
     CertificateModule,
     TaskModule,
+    FileModule,
     // PhotoModule,
     // MetadataModule,
     // PlatformModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FileService],
 })
 export class AppModule {}
