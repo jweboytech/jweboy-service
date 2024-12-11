@@ -51,6 +51,8 @@ export class CertificateController {
 
     if (record == null) {
       await this.service.insertOne(addDto);
+    } else {
+      await this.service.updateOne(addDto);
     }
 
     return addDto;

@@ -10,3 +10,8 @@ export class AddCertDto {
   @ApiProperty()
   expirationDate: Date;
 }
+
+export class UpdateCertDto {
+  @ApiProperty()
+  domain: string;
+}

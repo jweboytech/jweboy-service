@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Certificate } from './entity/certificate.entity';
 import { Repository } from 'typeorm';
-import { AddCertDto } from './dto/cert.dto';
+import { AddCertDto, UpdateCertDto } from './dto/cert.dto';
 
 @Injectable()
 export class CertificateService {
@@ -25,6 +25,14 @@ export class CertificateService {
       .insert()
       .into(Certificate)
       .values(addDto)
+      .execute();
+  }
+
+  updateOne(updateDto: UpdateCertDto) {
+    return this.repository
+      .createQueryBuilder()
+      .update(Certificate)
+      .set(updateDto)
       .execute();
   }
 
