@@ -1,12 +1,32 @@
 # 构建阶段
 FROM node:18-slim AS builder
 
+# 安装 Playwright 依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libnss3 \
+    libatk1.0-0 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxdamage1 \
+    libxrandr2 \
+    libgbm1 \
+    libpango-1.0-0 \
+    libasound2 \
+    libatspi2.0-0 \
+    libxshmfence1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY . .
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
     pnpm install
+
+# 安装 Playwright 浏览器
+RUN npx playwright install chromium
 
 RUN pnpm build 
 
