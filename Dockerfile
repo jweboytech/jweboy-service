@@ -2,26 +2,11 @@
 FROM node:18-slim AS builder
 
 # 安装 Playwright 依赖
-RUN apt-get install -y \
-    fonts-liberation \
-    libasound2 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libdrm2 \
-    libgbm1 \
-    libnspr4 \
-    libnss3 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    xdg-utils \
-    libxshmfence1 \
-    libxkbcommon0 \
-    libcairo2 \
-    libpango-1.0-0 \
-    libffi-dev
+RUN apt-get update && apt-get install -y \
+    libatk-bridge2.0-0 libcups2 libxfixes3 libxkbcommon0 libcairo2 \
+    fonts-liberation libasound2 libnss3 libatk1.0-0 libxcomposite1 libxrandr2 \
+    xdg-utils libpango-1.0-0 libcairo-gobject2 libgbm1 libdrm2 libnspr4 \
+    libxshmfence1 libxdamage1 libdbus-1-3
 
 WORKDIR /app
 
