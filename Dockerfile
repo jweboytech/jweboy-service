@@ -2,7 +2,7 @@
 FROM node:18-slim AS builder
 
 # 安装 Playwright 依赖
-sudo apt-get install -y \
+RUN apt-get install -y \
     fonts-liberation \
     libasound2 \
     libatk1.0-0 \
