@@ -1,18 +1,12 @@
 # 构建阶段
 FROM node:18-slim AS builder
 
-# Get the latest version of Playwright
-FROM mcr.microsoft.com/playwright:v1.44.1-jammy
-
 WORKDIR /app
 
 COPY . .
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
     pnpm install
-
-# 安装 Playwright 浏览器
-RUN npx playwright install --with-deps
 
 RUN pnpm build 
 
@@ -29,11 +23,17 @@ RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
     pnpm install --prod --frozen-lockfile
 
 # docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres 通过命令查询容器内的 IP 地址
-ENV DATABASE_HOST=172.17.0.9
+# ENV DATABASE_HOST=172.17.0.9
+# ENV DATABASE_PORT=3306
+# ENV DATABASE_USER=jweboy_u
+# ENV DATABASE_PASSWORD=jweboy_u18ahjks
+# ENV DATABASE_NAME=jweboy
+
+ENV DATABASE_HOST=rm-bp12313puo3721p4ypo.mysql.rds.aliyuncs.com
 ENV DATABASE_PORT=3306
-ENV DATABASE_USER=jweboy_u
-ENV DATABASE_PASSWORD=jweboy_u18ahjks
-ENV DATABASE_NAME=jweboy
+ENV DATABASE_USER=petusertest
+ENV DATABASE_PASSWORD=2066JJKKJOL0688!
+ENV DATABASE_NAME=jwboy
 
 EXPOSE 4000
 
