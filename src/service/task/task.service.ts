@@ -2,7 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { CertificateService } from '../certificate/certificate.service';
 import * as dayjs from 'dayjs';
-import { notifyDomainAlmostExpired, notifyDuckPost } from 'src/utils/webhook';
+import {
+  notifyDomainAlmostExpired,
+  notifyDuckPost,
+  notifyProducthunt,
+} from 'src/utils/webhook';
 import { chromium } from 'playwright';
 
 @Injectable()
@@ -76,5 +80,45 @@ export class TaskService {
 
     await browser.close(); // 关闭浏览器
     await notifyDuckPost([lastFrontItem, lastBackItem]);
+  }
+
+  @Cron(CronExpression.EVERY_HOUR)
+  async spiderProducthunt() {
+    const browser = await chromium.launch();
+    const page = await browser.newPage();
+
+    // 等待页面加载完成
+    await page.goto('https://www.producthunt.com', { waitUntil: 'load' });
+
+    // 获取今日最新 10 条
+    const container = page.locator('[data-test=homepage-section-0]');
+    const items = await container
+      .locator('[data-test^="post-item-"]')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => {
+          const titleNode = node.querySelector(
+            '[data-test^="post-name-"]',
+          ) as HTMLElement;
+          const descNode = node.querySelectorAll('a')[2] as HTMLElement;
+          const logoNode = node.querySelector('img') as HTMLImageElement;
+          const voteNode = node.querySelector(
+            'button[data-test="vote-button"]',
+          ) as HTMLButtonElement;
+          const tagsNode = node.querySelectorAll('a[target="_blank"]');
+
+          return {
+            title: titleNode.innerText.split('. ')[1],
+            description: descNode.innerText,
+            vote: +voteNode.innerText,
+            logo: logoNode.src,
+            tags: Array.from(tagsNode).map((item) => item.innerHTML),
+          };
+        }),
+      );
+    console.log(items);
+
+    await notifyProducthunt(items);
+
+    await browser.close(); // 关闭浏览器
   }
 }
