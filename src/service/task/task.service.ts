@@ -15,6 +15,13 @@ export class TaskService {
 
   constructor(private readonly certificateService: CertificateService) {}
 
+  // FIXME: 每天触发一次 supabase 查询，确保项目一段时间不访问数据库被冻结
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  async triggerDailyQuery() {
+    await this.certificateService.findAll();
+    this.logger.debug('Supabase daily query is successfully');
+  }
+
   // @Cron(CronExpression.EVERY_DAY_AT_1AM)
   // async handleCron() {
   //   const today = dayjs();
