@@ -23,14 +23,14 @@ import { FileModule } from './service/file/file.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         return {
-          type: 'mariadb',
+          type: 'postgres',
           host: configService.get<string>('DATABASE_HOST'),
           port: parseInt(configService.get<string>('DATABASE_PORT')),
           username: configService.get<string>('DATABASE_USER'),
           password: configService.get<string>('DATABASE_PASSWORD'),
           database: configService.get<string>('DATABASE_NAME'),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
-          synchronize: true,
+          synchronize: false,
           logging: true,
           extra: {
             max: 10, // 连接池中的最大连接数
@@ -44,10 +44,8 @@ import { FileModule } from './service/file/file.module';
     ProjectModule,
     CategorytModule,
     CertificateModule,
-    // TaskModule,
     FileModule,
-    // PhotoModule,
-    // MetadataModule,
+    TaskModule,
     // PlatformModule,
   ],
   controllers: [AppController],
