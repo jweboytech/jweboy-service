@@ -44,13 +44,13 @@ import { FileModule } from './service/file/file.module';
     ProjectModule,
     CategorytModule,
     CertificateModule,
-    TaskModule,
+    // TaskModule,
     FileModule,
     // PhotoModule,
     // MetadataModule,
     // PlatformModule,
   ],
   controllers: [AppController],
-  providers: [AppService, FileService],
+  providers: [AppService],
 })
 export class AppModule {}

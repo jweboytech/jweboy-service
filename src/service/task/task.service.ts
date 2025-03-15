@@ -82,7 +82,7 @@ export class TaskService {
     await notifyDuckPost([lastFrontItem, lastBackItem]);
   }
 
-  @Cron(CronExpression.EVERY_HOUR)
+  @Cron(CronExpression.EVERY_SECOND)
   async spiderProducthunt() {
     const browser = await chromium.launch();
     const page = await browser.newPage();
@@ -91,7 +91,7 @@ export class TaskService {
     await page.goto('https://www.producthunt.com', { waitUntil: 'load' });
 
     // 获取今日最新 10 条
-    const container = page.locator('[data-test=homepage-section-0]');
+    const container = await page.locator('[data-test=homepage-section-0]');
     const items = await container
       .locator('[data-test^="post-item-"]')
       .evaluateAll((nodes) =>
@@ -110,12 +110,12 @@ export class TaskService {
             title: titleNode.innerText.split('. ')[1],
             description: descNode.innerText,
             vote: +voteNode.innerText,
-            logo: logoNode.src,
+            logo: logoNode?.src,
             tags: Array.from(tagsNode).map((item) => item.innerHTML),
           };
         }),
       );
-    console.log(items);
+    // console.log(items);
 
     await notifyProducthunt(items);
 
