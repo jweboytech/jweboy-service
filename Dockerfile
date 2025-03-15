@@ -22,20 +22,19 @@ COPY package.json pnpm-lock.yaml ./
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
     pnpm install --prod --frozen-lockfile
 
-# docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' postgres 通过命令查询容器内的 IP 地址
-# ENV DATABASE_HOST=172.17.0.9
-# ENV DATABASE_PORT=3306
-# ENV DATABASE_USER=jweboy_u
-# ENV DATABASE_PASSWORD=jweboy_u18ahjks
-# ENV DATABASE_NAME=jweboy
+ARG DATABASE_HOST
+ARG DATABASE_PORT
+ARG DATABASE_USER
+ARG DATABASE_PASSWORD
+ARG DATABASE_NAME
 
-ENV DATABASE_HOST=rm-bp12313puo3721p4ypo.mysql.rds.aliyuncs.com
-ENV DATABASE_PORT=3306
-ENV DATABASE_USER=petusertest
-ENV DATABASE_PASSWORD=2066JJKKJOL0688!
-ENV DATABASE_NAME=jwboy
+ENV DATABASE_HOST=$DATABASE_HOST
+ENV DATABASE_PORT=$DATABASE_PORT
+ENV DATABASE_USER=$DATABASE_USER
+ENV DATABASE_PASSWORD=$DATABASE_PASSWORD
+ENV DATABASE_NAME=$DATABASE_NAME
 
-EXPOSE 4000
+EXPOSE 4100
 
 CMD [ "npm", "run", "start:prod" ]
 
