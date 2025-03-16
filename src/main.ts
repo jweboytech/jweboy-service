@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { ExceptionsFilter } from './filters/exceptions/exceptions.filter';
+import dns from 'dns';
+
+dns.setDefaultResultOrder('verbatim'); // 让 Node.js 优先使用 IPv6
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
