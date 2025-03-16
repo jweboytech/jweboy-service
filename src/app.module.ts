@@ -22,6 +22,7 @@ import { FileModule } from './service/file/file.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
+        console.log(configService.get<string>('DATABASE_HOST'));
         return {
           type: 'postgres',
           host: configService.get<string>('DATABASE_HOST'),
