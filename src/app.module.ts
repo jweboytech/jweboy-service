@@ -7,10 +7,10 @@ import { ProjectModule } from './service/project/project.module';
 import { CategorytModule } from './service/category/category.module';
 import { CertificateModule } from './service/certificate/certificate.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TaskService } from './service/task/task.service';
 import { TaskModule } from './service/task/task.module';
-import { FileService } from './service/file/file.service';
 import { FileModule } from './service/file/file.module';
+
+const isProd = process.env.NODE_ENV === 'production';
 
 @Module({
   imports: [
@@ -20,17 +20,22 @@ import { FileModule } from './service/file/file.module';
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        console.log(configService.get<string>('DATABASE_HOST'));
         return {
           type: 'postgres',
-          host: configService.get<string>('DATABASE_HOST'),
-          port: parseInt(configService.get<string>('DATABASE_PORT')),
-          username: configService.get<string>('DATABASE_USER'),
-          password: configService.get<string>('DATABASE_PASSWORD'),
-          database: configService.get<string>('DATABASE_NAME'),
+          ...(isProd
+            ? { url: configService.get<string>('DATABASE_URL') }
+            : {
+                host: configService.get<string>('DATABASE_HOST'),
+                port: parseInt(configService.get<string>('DATABASE_PORT')),
+                username: configService.get<string>('DATABASE_USER'),
+                password: configService.get<string>('DATABASE_PASSWORD'),
+                database: configService.get<string>('DATABASE_NAME'),
+              }),
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
+          migrations: ['migrations/*.js'], // 迁移文件存放路径
           synchronize: false,
           logging: true,
           extra: {
@@ -40,14 +45,12 @@ import { FileModule } from './service/file/file.module';
           },
         };
       },
-      inject: [ConfigService],
     }),
     ProjectModule,
     CategorytModule,
     CertificateModule,
     FileModule,
     TaskModule,
-    // PlatformModule,
   ],
   controllers: [AppController],
   providers: [AppService],
