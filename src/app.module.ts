@@ -23,6 +23,7 @@ const isProd = process.env.NODE_ENV === 'production';
       inject: [ConfigService],
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
+        console.log(isProd, configService.get<string>('DATABASE_URL'));
         return {
           type: 'postgres',
           ...(isProd
