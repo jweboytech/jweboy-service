@@ -11,8 +11,7 @@ import { TaskModule } from './service/task/task.module';
 import { FileModule } from './service/file/file.module';
 import { RednoteModule } from './service/rednote/rednote.module';
 
-// const isProd = process.env.NODE_ENV === 'production';
-const isProd = true;
+const isProd = process.env.NODE_ENV === 'production';
 
 @Module({
   imports: [
@@ -25,7 +24,6 @@ const isProd = true;
       inject: [ConfigService],
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        console.log(isProd, configService.get<string>('DATABASE_URL'));
         return {
           type: 'postgres',
           ...(isProd
@@ -41,11 +39,11 @@ const isProd = true;
           migrations: ['migrations/*.js'], // 迁移文件存放路径
           synchronize: true,
           logging: true,
-          // extra: {
-          //   max: 10, // 连接池中的最大连接数
-          //   min: 2, // 连接池中的最小连接数
-          //   idleTimeoutMillis: 30000, // 如果一个线程 30 秒钟内没有被使用过的话，那么就释放线程
-          // },
+          extra: {
+            max: 10, // 连接池中的最大连接数
+            min: 2, // 连接池中的最小连接数
+            idleTimeoutMillis: 30000, // 如果一个线程 30 秒钟内没有被使用过的话，那么就释放线程
+          },
         };
       },
     }),
