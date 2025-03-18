@@ -27,14 +27,14 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('docs', app, document);
 
   app.enableCors({ origin: '*' });
   app.useGlobalInterceptors(new TransformInterceptor());
   app.useGlobalFilters(new ExceptionsFilter());
 
   await app.listen(4100, () => {
-    console.log('Server is running at http://localhost:4100/api');
+    console.log('Server is running at http://localhost:4100/docs');
   });
 }
 bootstrap();
