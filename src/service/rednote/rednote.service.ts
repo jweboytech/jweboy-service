@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RedNote } from './entity/rednote.entity';
 import { Repository } from 'typeorm';
-import { CreateRedNoteDto, UpdateRedNoteDto } from './dto/rednote.dto';
+import {
+  CreateRedNoteDto,
+  RedNoteQuery,
+  UpdateRedNoteDto,
+} from './dto/rednote.dto';
 
 @Injectable()
 export class RednoteService {
@@ -10,6 +14,32 @@ export class RednoteService {
     @InjectRepository(RedNote)
     private readonly repository: Repository<RedNote>,
   ) {}
+
+  findMany({
+    specifiedCondition,
+    partiallyFriendly,
+    prohibitLanding,
+    allowLanding,
+    washrooms,
+    parking,
+  }: RedNoteQuery) {
+    return this.repository
+      .createQueryBuilder('rednote')
+      .select()
+      .where('rednote.specified_condition = :specifiedCondition', {
+        specifiedCondition,
+      })
+      .orWhere('rednote.partially_friendly = :partiallyFriendly', {
+        partiallyFriendly,
+      })
+      .orWhere('rednote.prohibit_landing = :prohibitLanding', {
+        prohibitLanding,
+      })
+      .orWhere('rednote.allow_landing = :allowLanding', { allowLanding })
+      .orWhere('rednote.washrooms = :washrooms', { washrooms })
+      .orWhere('rednote.parking = :parking', { parking })
+      .getManyAndCount();
+  }
 
   findAll() {
     return this.repository

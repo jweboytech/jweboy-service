@@ -46,3 +46,23 @@ export class UpdateRedNoteDto {
   @ApiProperty({ type: 'enum', enum: RedNoteCategory })
   category: RedNoteCategory;
 }
+
+export class RedNoteQuery {
+  @ApiProperty({ required: false })
+  specifiedCondition: string;
+
+  @ApiProperty({ required: false })
+  partiallyFriendly: string;
+
+  @ApiProperty({ required: false })
+  prohibitLanding: string;
+
+  @ApiProperty({ required: false })
+  allowLanding: string;
+
+  @ApiProperty({ required: false })
+  washrooms: string;
+
+  @ApiProperty({ required: false })
+  parking: string;
+}

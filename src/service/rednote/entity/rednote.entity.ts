@@ -39,6 +39,24 @@ export class RedNote {
   @Column({ type: 'enum', enum: RedNoteCategory })
   category: RedNoteCategory;
 
+  @Column({ name: 'specified_condition', nullable: true })
+  specifiedCondition: string;
+
+  @Column({ name: 'partially_friendly', nullable: true })
+  partiallyFriendly: string;
+
+  @Column({ name: 'prohibit_landing', nullable: true })
+  prohibitLanding: string;
+
+  @Column({ name: 'allow_landing', nullable: true })
+  allowLanding: string;
+
+  @Column({ nullable: true })
+  washrooms: string;
+
+  @Column({ name: 'parking', nullable: true })
+  parking: string;
+
   /** ======================================= */
   @CreateDateColumn({ name: 'create_at' })
   createAt: Date;

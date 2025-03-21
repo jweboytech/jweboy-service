@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -10,9 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { FileUploadDto } from './dto/file.dto';
 import { RednoteService } from './rednote.service';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
-import { RedNoteCategory } from './entity/rednote.entity';
-import { CreateRedNoteDto } from './dto/rednote.dto';
+import { CreateRedNoteDto, RedNoteQuery } from './dto/rednote.dto';
 
 @Controller('rednote')
 export class RednoteController {
@@ -31,9 +30,11 @@ export class RednoteController {
     await this.service.insertOne(items as CreateRedNoteDto[]);
   }
 
-  @Get('all')
-  findAll() {
-    return this.service.findAll();
+  @Get('list')
+  async findAll(@Query() query: RedNoteQuery) {
+    const [items, total] = await this.service.findMany(query);
+
+    return { items, total };
   }
 
   @Post('add')
