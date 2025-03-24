@@ -13,9 +13,9 @@ export class CertificateService {
 
   findAll() {
     return this.repository
-      .createQueryBuilder('certificate')
+      .createQueryBuilder()
       .select()
-      .orderBy('certificate.createAt', 'DESC')
+      .orderBy('create_at', 'DESC')
       .getManyAndCount();
   }
 

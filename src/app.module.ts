@@ -11,8 +11,7 @@ import { TaskModule } from './service/task/task.module';
 import { FileModule } from './service/file/file.module';
 import { RednoteModule } from './service/rednote/rednote.module';
 
-// const isProd = process.env.NODE_ENV === 'production';
-const isProd = true;
+const isProd = process.env.NODE_ENV === 'production';
 
 @Module({
   imports: [

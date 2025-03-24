@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -15,6 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploadDto } from './dto/upload.dto';
 import { CertificateService } from './certificate.service';
 import { getCertificateData } from 'src/utils';
+import { TransformCertDTO } from './dto/cert.dto';
 
 @ApiTags('Certificate')
 @Controller('certificate')
@@ -23,18 +25,17 @@ export class CertificateController {
 
   @Post('transform')
   @HttpCode(HttpStatus.OK)
-  async transformPem() {
-    const certFile = path.resolve(__dirname, '../../../jweboy.online.pem');
-    const certPem = readFileSync(certFile, 'utf-8');
-    const certData = forge.pki.certificateFromPem(certPem);
-    const addDto = getCertificateData(certData);
-    const record = await this.service.findOne(addDto.domain);
+  async transformPem(@Body() transformDto: TransformCertDTO) {
+    const certDto = getCertificateData(transformDto.publicKey);
+    const record = await this.service.findOne(certDto.domain);
 
     if (record == null) {
-      await this.service.insertOne(addDto);
+      await this.service.insertOne(certDto);
+    } else {
+      await this.service.updateOne(certDto);
     }
 
-    return addDto;
+    return true;
   }
 
   @Post('upload')
@@ -43,10 +44,8 @@ export class CertificateController {
   @ApiBody({ type: FileUploadDto })
   @UseInterceptors(FileInterceptor('file')) // 使用 multer 文件拦截器
   async uploadPem(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    const certPem = file.buffer.toString('utf8');
-    const certData = forge.pki.certificateFromPem(certPem);
-    const addDto = getCertificateData(certData);
+    const certContent = file.buffer.toString('utf8');
+    const addDto = getCertificateData(certContent);
     const record = await this.service.findOne(addDto.domain);
 
     if (record == null) {
@@ -55,7 +54,7 @@ export class CertificateController {
       await this.service.updateOne(addDto);
     }
 
-    return addDto;
+    return true;
   }
 
   @Get('list')

@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . .
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
-    pnpm install
+    pnpm install --force
 
 RUN pnpm build 
 
@@ -20,7 +20,7 @@ COPY --from=builder /app/dist ./dist
 COPY package.json pnpm-lock.yaml ./
 
 RUN npm i -g pnpm --registry=https://registry.npmmirror.com && \
-    pnpm install --prod --frozen-lockfile
+    pnpm install --prod --frozen-lockfile  --force
 
 ARG DATABASE_URL
 
